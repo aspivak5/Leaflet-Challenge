@@ -39,36 +39,36 @@ var baseMaps = {
 
   var url = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geojson";
   
+  function Choosecolor(depth){
+    if (depth > 90) {
+        return  "#fc0303";
+    }
+    else if (depth > 70 && depth <= 90 ) {
+        return "#fc4a03";
+    }
+    else if (depth > 50 && depth <=70){
+        return "#fc9003"; //orange
+    }
+    else if (depth > 30 && depth <=50){
+        return  "#fcce03";// light salmon
+    }
+    else if (depth > 10 && depth <=30){
+        return "#c6fc03" ; // light green 
+    }
+    else {
+        return "#5efc03"; // brighht green
+    }
+};
+function markerSize(magnitude){
+    // if (magnitude === 0){
+    //     return 1;
+    // }
+    return magnitude * 3;
+}
+
   d3.json(url, function(data) {
     console.log(data)
-    function Choosecolor(depth){
-        if (depth > 90) {
-            return  "#FF0000";
-        }
-        else if (depth > 70 && depth <= 90 ) {
-            return "#DAA520";
-        }
-        else if (depth > 50 && depth <=70){
-            return "#FFA500"; //orange
-        }
-        else if (depth > 30 && depth <=50){
-            return  "#FFA07A";// light salmon
-        }
-        else if (depth > 10 && depth <=30){
-            return "#90EE90" ; // light green 
-        }
-        else {
-            return "#7CFC00"; // brighht green
-        }
-    };
-    function markerSize(magnitude){
-        // if (magnitude === 0){
-        //     return 1;
-        // }
-        return magnitude * 3;
-    }
-
-    L.geoJson(data,{
+     L.geoJson(data,{
         pointToLayer: function(feature,latlng){
             return L.circleMarker(latlng);
         },
@@ -87,8 +87,33 @@ var baseMaps = {
             )
         }
     }).addTo(myMap)
-
   });
+
+  var legend = L.control({
+    position: "bottomright"
+  });
+
+  legend.onAdd = function() {
+    var div = L.DomUtil.create("div", "info legend");
+
+    var grades = [-10, 10, 30, 50, 70, 90];
+    var colors = [];
+
+    // Loop through our intervals and generate a label with a colored square for each interval.
+    for (var i = 0; i < grades.length; i++) {
+      div.innerHTML += "<i style='background: "
+        + Choosecolor(grades[i]+1)
+        + "'></i> "
+        + grades[i]
+        + (grades[i + 1] ? "&ndash;" + grades[i + 1] + "<br>" : "+");
+    }
+    return div;
+  };
+
+  // We add our legend to the map.
+  legend.addTo(myMap);
+
+
 
   
   
