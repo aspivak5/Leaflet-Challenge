@@ -43,20 +43,20 @@ var baseMaps = {
     if (depth > 90) {
         return  "#fc0303";
     }
-    else if (depth > 70 && depth <= 90 ) {
+    else if (depth > 70) {
         return "#fc4a03";
     }
-    else if (depth > 50 && depth <=70){
-        return "#fc9003"; //orange
+    else if (depth > 50){
+        return "#fc9003"; 
     }
-    else if (depth > 30 && depth <=50){
-        return  "#fcce03";// light salmon
+    else if (depth > 30){
+        return  "#fcce03";
     }
-    else if (depth > 10 && depth <=30){
-        return "#c6fc03" ; // light green 
+    else if (depth > 10 ){
+        return "#c6fc03" ; 
     }
     else {
-        return "#5efc03"; // brighht green
+        return "#5efc03"; 
     }
 };
 function markerSize(magnitude){
@@ -99,7 +99,7 @@ function markerSize(magnitude){
     var grades = [-10, 10, 30, 50, 70, 90];
     var colors = [];
 
-    // Loop through our intervals and generate a label with a colored square for each interval.
+    // Loop through intervals and generate a label with a colored square for each interval.
     for (var i = 0; i < grades.length; i++) {
       div.innerHTML += "<i style='background: "
         + Choosecolor(grades[i]+1)
