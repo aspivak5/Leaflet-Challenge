@@ -35,27 +35,48 @@ var baseMaps = {
   d3.json(url, function(data) {
     // Creating a GeoJSON layer with the retrieved data
     console.log(data)
-    function color(depth){
+    function Choosecolor(depth){
         if (depth > 90) {
-            return  "#FF0000"
+            return  "#FF0000";
         }
         else if (depth > 70 && depth <= 90 ) {
-            return "#DC143C"
+            return "#DAA520";
         }
         else if (depth > 50 && depth <=70){
-            return "#FFA500"
+            return "#FFA500"; //orange
         }
         else if (depth > 30 && depth <=50){
-            return  "#DAA520"
+            return  "#FFA07A";// light salmon
         }
         else if (depth > 10 && depth <=30){
-            return "#F0E68C" 
+            return "#90EE90" ; // light green 
         }
         else {
-            return "#7CFC00"
+            return "#7CFC00"; // brighht green
         }
+    };
+    function markerSize(magnitude){
+        // if (magnitude === 0){
+        //     return 1;
+        // }
+        return magnitude * 3;
     }
-    
+
+    L.geoJson(data,{
+        pointToLayer: function(feature,latlng){
+            return L.circleMarker(latlng);
+        },
+        style: function(feature){
+            return {
+                fillColor:Choosecolor(feature.geometry.coordinates[2]),
+                radius: markerSize(feature.properties.mag),
+                fillOpacity:1,
+                color: "black",
+                weight:1
+            }
+        }
+    }).addTo(myMap)
+
   });
 
   
