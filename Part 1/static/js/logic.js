@@ -35,7 +35,27 @@ var baseMaps = {
   d3.json(url, function(data) {
     // Creating a GeoJSON layer with the retrieved data
     console.log(data)
-    L.geoJson(data).addTo(myMap);
+    function color(depth){
+        if (depth > 90) {
+            return  "#FF0000"
+        }
+        else if (depth > 70 && depth <= 90 ) {
+            return "#DC143C"
+        }
+        else if (depth > 50 && depth <=70){
+            return "#FFA500"
+        }
+        else if (depth > 30 && depth <=50){
+            return  "#DAA520"
+        }
+        else if (depth > 10 && depth <=30){
+            return "#F0E68C" 
+        }
+        else {
+            return "#7CFC00"
+        }
+    }
+    
   });
 
   
