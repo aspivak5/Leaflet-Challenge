@@ -26,13 +26,13 @@ var darkmap = L.tileLayer("https://api.mapbox.com/styles/v1/mapbox/{id}/tiles/{z
   accessToken: API_KEY
 });
 
-//create basemaps
+//create basemaps object
 var baseMaps = {
     "Light Map": lightmap,
     "Dark Map": darkmap
   };
 
-  // Create an overlays object to add to the layer control
+  // Create an overlays object 
 var overlay = {
     "Earthquakes":earthquakeLayer,
     "Tectonic Plates": plateLayer
@@ -45,7 +45,7 @@ var overlay = {
     layers: [lightmap,earthquakeLayer]
   });
   
-  // Pass our map layers into our layer control
+  // Pass map layers into our layer control
   // Add the layer control to the map
 L.control.layers(baseMaps,overlay).addTo(myMap);
 
