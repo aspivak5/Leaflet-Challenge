@@ -7,6 +7,9 @@
 //   accessToken: API_KEY
 // });
 
+var earthquakeLayer = new L.layerGroup();
+var plateLayer = new L.layerGroup();
+
 var lightmap = L.tileLayer("https://api.mapbox.com/styles/v1/mapbox/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
   attribution: "Map data &copy; <a href=\"https://www.openstreetmap.org/\">OpenStreetMap</a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA</a>, Imagery © <a href=\"https://www.mapbox.com/\">Mapbox</a>",
   maxZoom: 18,
@@ -21,23 +24,29 @@ var darkmap = L.tileLayer("https://api.mapbox.com/styles/v1/mapbox/{id}/tiles/{z
   accessToken: API_KEY
 });
 var baseMaps = {
-    "Street Map": lightmap,
+    "Light Map": lightmap,
     "Dark Map": darkmap
   };
+
+var overlay = {
+    "Earthquakes":earthquakeLayer,
+    "Tectonic Plates": plateLayer
+}
 
   var myMap = L.map("map", {
     center: [32.09, -100.71],
     zoom: 4,
-    layers: [lightmap]
+    layers: [lightmap,earthquakeLayer]
   });
   
   // Pass our map layers into our layer control
   // Add the layer control to the map
-  L.control.layers(baseMaps, {
-  }).addTo(myMap);
+//   L.control.layers(baseMaps, {
+//   }).addTo(myMap);
+L.control.layers(baseMaps,overlay).addTo(myMap);
 
 
-  var url = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geojson";
+  var Earthq_url = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geojson";
   
   function Choosecolor(depth){
     if (depth > 90) {
@@ -66,7 +75,7 @@ function markerSize(magnitude){
     return magnitude * 3;
 }
 
-  d3.json(url, function(data) {
+  d3.json(Earthq_url, function(data) {
     console.log(data)
      L.geoJson(data,{
         pointToLayer: function(feature,latlng){
@@ -86,8 +95,9 @@ function markerSize(magnitude){
                 `Location: ${feature.properties.place} <br> Magnitude: ${feature.properties.mag} <br> Depth: ${feature.geometry.coordinates[2]}`
             )
         }
-    }).addTo(myMap)
+    }).addTo(earthquakeLayer);
   });
+  earthquakeLayer.addTo(myMap);
 
   var legend = L.control({
     position: "bottomright"
@@ -113,6 +123,15 @@ function markerSize(magnitude){
   // We add our legend to the map.
   legend.addTo(myMap);
 
+  var Plate_url = "https://raw.githubusercontent.com/fraxen/tectonicplates/master/GeoJSON/PB2002_boundaries.json"
+
+  d3.json(Plate_url,function(data){
+    L.geoJson(data,{
+        color:"#e861cb",
+        weight:2
+    }).addTo(plateLayer);
+  })
+  plateLayer.addTo(myMap);
 
 
   
