@@ -78,9 +78,6 @@ L.control.layers(baseMaps,overlay).addTo(myMap);
 };
 //create a function that determines the size of the radius based on magnitude 
 function markerSize(magnitude){
-    // if (magnitude === 0){
-    //     return 1;
-    // }
     return magnitude * 3;
 }
 //perform api call
