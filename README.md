@@ -37,8 +37,6 @@ In this step we are going to..
 ## Preview
 ![Preview](imgs/pic1.png)
 
-## License
-MIT License.
 
 ## More Info
 Github: https://github.com/aspivak5
